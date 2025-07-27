@@ -3,3 +3,4 @@ uvicorn
 pandas
 redis
 fastapi-limiter
+prometheus-client

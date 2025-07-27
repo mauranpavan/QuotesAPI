@@ -11,18 +11,36 @@ from app.services.quotes_loader import (
 )
 from typing import Optional
 import logging
+from prometheus_client import Counter, Histogram
+import time
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/quotes", tags=["Quotes"])
 
+# Create Prometheus metrics (put these at module level)
+quote_requests_total = Counter('total_quote_requests', 'Total quote requests')
+response_time_histogram = Histogram('average_response_time_seconds', 'Response time in seconds')
+
 @router.get("/random")
 async def read_random_quote(
     request: Request,
-    ratelimit: str = Depends(RateLimiter(times=2, seconds=1))  # 2 requests per second
+    ratelimit: str = Depends(RateLimiter(times=2, seconds=1))
 ):
     """Get a random quote"""
-    return get_random_quote()
+    start_time = time.time()
+    
+    # Increment the request counter
+    quote_requests_total.inc()
+    
+    # Get the quote
+    quote = get_random_quote()
+    
+    # Record response time
+    response_time = time.time() - start_time
+    response_time_histogram.observe(response_time)
+    
+    return quote
 
 @router.get("/")
 async def read_all_quotes(
