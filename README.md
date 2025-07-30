@@ -43,27 +43,6 @@ cd QuotesAPI
 
 ---
 
-## Project Structure
-
-```
-.
-├── .devcontainer/           # Dev container config
-│   └── devcontainer.json
-├── app/
-│   ├── main.py              # FastAPI app
-│   ├── routes.py            # API endpoints
-│   ├── utils.py             # Utilities
-│   └── logger.py            # Logging setup
-├── data/
-│   └── quotes.csv           # Quotes dataset
-├── docker-compose.yml       # All services
-├── prometheus.yml           # Prometheus config
-├── requirements.txt
-└── README.md
-```
-
----
-
 ## API Docs
 
 - Swagger UI: [http://localhost:8000/docs](http://localhost:8000/docs)
@@ -95,18 +74,11 @@ cd QuotesAPI
 - Available at `http://localhost:3000`
 - Added Prometheus as data source: `http://localhost:9090/`
 
+#### Dashboards
+![alt text](dashboard/dashboard_1.png)
+![alt text](dashboard/dashboard_2.png)
+
 ---
-
-## 🪵 Logging
-
-Using Python's `logging` module to log key events:
-
-```python
-import logging
-logger = logging.getLogger(__name__)
-logger.info("App started")
-```
-
 ## Dependencies
 
 Installed via `requirements.txt`:
@@ -115,29 +87,11 @@ Installed via `requirements.txt`:
 fastapi
 uvicorn
 pandas
-slowapi[redis]
 redis
-prometheus-fastapi-instrumentator
+fastapi-limiter
+prometheus-client
 ```
 
-
-## Dev Container Notes
-
-Your `.devcontainer/devcontainer.json` might look like this:
-
-```json
-{
-  "name": "FastAPI Dev Container",
-  "dockerComposeFile": "docker-compose.yml",
-  "service": "api",
-  "workspaceFolder": "/workspace",
-  "extensions": [
-    "ms-python.python",
-    "ms-azuretools.vscode-docker"
-  ],
-  "postCreateCommand": "pip install -r requirements.txt"
-}
-```
 ## License
 
 MIT License
